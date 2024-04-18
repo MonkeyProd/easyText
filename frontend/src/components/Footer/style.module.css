@@ -1,0 +1,43 @@
+.Footer {
+    width: 100%;
+    height: 186px;
+    background: #d9d9d91a;
+    position: absolute;
+    bottom: 0;
+    padding-top: 29px;
+    padding-left: 82px;
+    padding-right: 68px;
+    display: flex;
+    justify-content: space-between;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+.InfoLeft {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.Right {
+    display: flex;
+    gap: 70px;
+}
+
+.InfoRight {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+.InfoTitle {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.05px;
+}
+.InfoBody {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 16.94px;
+}

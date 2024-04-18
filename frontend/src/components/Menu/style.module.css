@@ -1,0 +1,78 @@
+.Menu {
+    height: 78px;
+    background: rgba(217, 217, 217, 0.1);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 0 0 15px 15px;
+
+    padding-left: 19px;
+    padding-right: 41px;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+}
+.Label {
+    display: flex;
+    align-items: end;
+}
+
+.LabelText {
+    font-size: 24px;
+}
+
+.AboutUsLink {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.78px;
+    text-align: center;
+}
+
+.AboutUsLink:hover {
+    filter: brightness(60%);
+}
+
+button {
+    all: unset;
+}
+
+button:focus {
+    outline: revert;
+}
+
+.LoginButton {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: end;
+    background: #d9d9d9;
+    border-radius: 15px;
+    width: 125px;
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.78px;
+    text-align: center;
+    color: #2a302e;
+    padding: 5px;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+.LoginButton:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+.RightCorner {
+    display: flex;
+    align-items: center;
+    gap: 49px;
+}
