@@ -1,0 +1,9 @@
+.AboutContainer {
+    display: flex;
+    flex-direction: column;
+    height: 1200px;
+}
+
+.Title {
+    margin-top: 57px;
+}

@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
 }
+
 .AppPage {
     width: 70%;
     background: #1e1e1e6e;
@@ -38,14 +39,106 @@
 .App-link {
     color: #61dafb;
 }
+
 #root {
     height: 100%;
+}
+
+.AuthModal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 610px;
+    height: 350px;
+    /* Need a specific value to work */
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #131713;
+    gap: 22px;
+    padding-bottom: 25px;
+}
+
+.AuthToRegister {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.78px;
+    text-align: left;
+
+}
+
+.AuthToRegister:hover {
+    cursor: pointer;
+    color: rgba(72, 116, 72, 0.315);
+}
+
+.AuthButton {
+    background: #00000061;
+    width: 250px;
+    height: 54px;
+    border-radius: 20px;
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 29.05px;
+    text-align: center;
+}
+
+.AuthButton:hover {
+    background: #14141461;
+    cursor: pointer;
+}
+
+.AuthInput {
+    all: unset;
+    margin-left: 16px;
+    background: #00000061;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 18.15px;
+    text-align: left;
+}
+
+.AuthInput::placeholder {
+    color: white;
+}
+
+.AuthInputContainer {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    background: #00000061;
+    padding: 10px 25px 10px 25px;
+    border-radius: 20px;
+    width: 570px;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    /* Opera/IE 8+ */
+}
+
+.OverlayAuthModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #2B2828D1;
 }
 
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }

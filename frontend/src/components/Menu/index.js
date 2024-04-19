@@ -2,30 +2,32 @@ import React from "react";
 import styles from "./style.module.css";
 import { Link } from "react-router-dom";
 
-export const Menu = () => {
+export const Menu = (props) => {
     return (
         <div className={styles.Menu}>
             <div className={styles.Label}>
-                <svg
-                    width="42"
-                    height="42"
-                    viewBox="0 0 42 42"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M15.75 27.65H19.25V34.5625H22.75V10.3688H26.25V34.5625H29.75V10.3688H35V6.91251H15.75C9.95925 6.91251 5.25 11.5629 5.25 17.2813C5.25 22.9996 9.95925 27.65 15.75 27.65ZM15.75 10.3688H19.25V24.1938H15.75C11.8895 24.1938 8.75 21.0935 8.75 17.2813C8.75 13.469 11.8895 10.3688 15.75 10.3688Z"
-                        fill="white"
-                    />
-                </svg>
-                <span className={styles.LabelText}>easyText</span>
+                <Link className={styles.Label} to="/">
+                    <svg
+                        width="42"
+                        height="42"
+                        viewBox="0 0 42 42"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M15.75 27.65H19.25V34.5625H22.75V10.3688H26.25V34.5625H29.75V10.3688H35V6.91251H15.75C9.95925 6.91251 5.25 11.5629 5.25 17.2813C5.25 22.9996 9.95925 27.65 15.75 27.65ZM15.75 10.3688H19.25V24.1938H15.75C11.8895 24.1938 8.75 21.0935 8.75 17.2813C8.75 13.469 11.8895 10.3688 15.75 10.3688Z"
+                            fill="white"
+                        />
+                    </svg>
+                    <span className={styles.LabelText}>easyText</span>
+                </Link>
             </div>
             <div className={styles.RightCorner}>
-                <Link to="" className={styles.AboutUsLink}>
+                <Link to="/about" className={styles.AboutUsLink}>
                     О нас
                 </Link>
 
-                <button className={styles.LoginButton}>
+                <button className={styles.LoginButton} onClick={() => props.openAuthCallback()}>
                     ВОЙТИ
                     <svg
                         width="24"

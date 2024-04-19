@@ -13,6 +13,7 @@ body {
     font-size: 15px;
     line-height: 29px;
     height: 100%;
+    overflow-y: scroll;
 }
 
 html {
