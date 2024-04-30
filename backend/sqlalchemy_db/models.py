@@ -15,13 +15,9 @@ from .database import Base
 class Users(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, nullable=False)
-    name = Column(String, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-
-    __table_args__ = (
-        PrimaryKeyConstraint('id'),
-    )
 
     def __repr__(self):
         return f"User(id={self.id}, name='{self.name}', password='{self.password}')"

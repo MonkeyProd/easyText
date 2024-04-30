@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./style.module.css";
+import { useCookies } from "react-cookie"
 import { Link } from "react-router-dom";
 
 export const Menu = (props) => {
+    const [cookies, setCookie] = useCookies(['user', 'token'])
     return (
         <div className={styles.Menu}>
             <div className={styles.Label}>
@@ -22,7 +24,8 @@ export const Menu = (props) => {
                     <span className={styles.LabelText}>easyText</span>
                 </Link>
             </div>
-            <div className={styles.RightCorner}>
+            <div className={styles.RightCorner}> {!cookies['user'] ? <>
+
                 <Link to="/about" className={styles.AboutUsLink}>
                     О нас
                 </Link>
@@ -42,6 +45,11 @@ export const Menu = (props) => {
                         />
                     </svg>
                 </button>
+            </>
+                :
+                <>
+                    {cookies['user']}
+                </>}
             </div>
         </div>
     );

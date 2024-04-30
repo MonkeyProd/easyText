@@ -9,6 +9,8 @@ from fastapi.responses import FileResponse, RedirectResponse
 from starlette.responses import JSONResponse
 from sqlalchemy_db import backend as db
 
+from api_schemas import LoginBody
+
 db.init_db()
 
 app = FastAPI()
@@ -36,7 +38,9 @@ def check_auth(user: str = '', token: str = ''):
 
 
 @app.post("/register")
-async def register_page(user: str = '', password: str = ''):
+async def register_page(body: LoginBody):
+    user = body.user
+    password = body.password
     if not user or not password:
         return JSONResponse(headers=GLOBAL_HEADERS, status_code=400, content="Missing user or password")
     if db.is_user_exist(user):
@@ -49,8 +53,10 @@ async def register_page(user: str = '', password: str = ''):
                         content="Successful registration! Redirection to login page in 5 seconds...")
 
 
-@app.get("/login")
-async def login(user: str = '', password: str = ''):
+@app.post("/login")
+async def login(body: LoginBody):
+    user = body.user
+    password = body.password
     if not db.is_user_exist(user):
         return JSONResponse(headers=GLOBAL_HEADERS, status_code=401, content="Invalid authentication credentials")
     if db.is_password_correct(user, password):
@@ -72,7 +78,6 @@ async def login(user: str = '', password: str = ''):
             success, json_token = db.get_token(user)
             # return existing token
             if success:
-                json_token['role'] = db.get_user_role(user)
                 print("token success not expired", json_token)
                 return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=json_token)
             else:
@@ -80,18 +85,16 @@ async def login(user: str = '', password: str = ''):
                                     content="Internal error. failed to retrieve token from database")
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=401, content="Invalid authentication credentials")
 
+@app.post('/parse')
+async def parse_url(body: ParseUrlBody):
+    pass
+
 
 @app.get('/test')
 async def test():
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content="test")
 
-
-# настройкst_pathи
-# папка DATA чтобы можно было обозначить
-# добавить флаг обозначающий может ли пользователь менять дефолтное расположение проекта
-# чтобы админ мог перемещать проекты
-
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, port=8000, host='127.0.0.1')
+    uvicorn.run(app, port=8000, host='0.0.0.0')
