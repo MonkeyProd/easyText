@@ -1,15 +1,17 @@
 import json
 from os import listdir
 from shutil import make_archive
+from typing import Annotated
 
 import fastapi
-from fastapi import FastAPI, UploadFile, Request, Depends
+from fastapi import FastAPI, UploadFile, Request, Depends, Cookie
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, RedirectResponse
 from starlette.responses import JSONResponse
 from sqlalchemy_db import backend as db
 
-from api_schemas import LoginBody
+from api_schemas import LoginBody, ParseUrlBody
+from neuro.nn import parse
 
 db.init_db()
 
@@ -86,8 +88,12 @@ async def login(body: LoginBody):
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=401, content="Invalid authentication credentials")
 
 @app.post('/parse')
-async def parse_url(body: ParseUrlBody):
-    pass
+async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = None, token: Annotated[str | None, Cookie()] = None):
+    success, msg = db.check_auth(user, token)
+    url = body.url
+    language = body.language
+    text = parse(url, language, user)
+    return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=f"{text}")
 
 
 @app.get('/test')

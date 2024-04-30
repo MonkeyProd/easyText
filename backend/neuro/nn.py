@@ -8,13 +8,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-filename = "image"
-url = "http://www.proinfosystem.com/articles/hidden.html"
-language = "rus"
-
-path = os.path.dirname(os.path.abspath(__file__))
-
-
 def saveUrlToImage(url, resultImageName):
     options = Options()
     options.add_argument("--window-size=1920,1080")
@@ -48,13 +41,18 @@ def imageToText(image_path, language):
     return text
 
 
-path = os.path.dirname(os.path.abspath(__file__))
+def parse(url, language, image_name):
+    filename = image_name
+    # url = "http://www.proinfosystem.com/articles/hidden.html"
+    # language = "rus"
 
-saveUrlToImage(url, filename)
-text = imageToText(f"{path}\{filename}.png", language)
+    path = './images'
 
-text_filename = "../text.txt"
-with open(text_filename, "w", encoding="utf-8") as file:
-    file.write(text)
+    saveUrlToImage(url, f"{path}/{filename}")
+    text = imageToText(f"{path}/{filename}.png", language)
 
-print(text)
+    text_filename = f"./texts/{filename}.txt"
+    with open(text_filename, "w", encoding="utf-8") as file:
+        file.write(text)
+
+    return text

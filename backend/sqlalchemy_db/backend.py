@@ -71,7 +71,7 @@ def user_have_token(db: Session, user: str):
 
 @db_session
 def check_auth(db: Session, user: str, token: uuid) -> Tuple[bool, str]:
-    if len(user) == 0:
+    if user is None or len(user) == 0:
         return False, "User name is empty"
     if token is None:
         return False, "Token is empty"
