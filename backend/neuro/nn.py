@@ -53,7 +53,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 saveUrlToImage(url, filename)
 text = imageToText(f"{path}\{filename}.png", language)
 
-text_filename = "text.txt"
+text_filename = "../text.txt"
 with open(text_filename, "w", encoding="utf-8") as file:
     file.write(text)
 
