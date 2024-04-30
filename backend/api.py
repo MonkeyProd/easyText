@@ -90,8 +90,10 @@ async def login(body: LoginBody):
 @app.post('/parse')
 async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = None, token: Annotated[str | None, Cookie()] = None):
     success, msg = db.check_auth(user, token)
+    print(f'auth: {success}, message: {msg}')
     url = body.url
     language = body.language
+    print('started parsing')
     text = parse(url, language, user)
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=f"{text}")
 
