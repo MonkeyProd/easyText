@@ -1,0 +1,4 @@
+.idea
+backend/__pycache__
+backend/sqlalchemy_db
+backend
