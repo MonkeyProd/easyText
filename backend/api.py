@@ -11,6 +11,7 @@ from starlette.responses import JSONResponse
 from sqlalchemy_db import backend as db
 
 from api_schemas import LoginBody, ParseUrlBody
+from sqlalchemy_db.schemas import HistoryEntry
 from neuro.nn import parse
 
 db.init_db()
@@ -34,6 +35,7 @@ app.add_middleware(
 def check_auth(user: str = '', token: str = ''):
     print(f'Checking auth for user[{user}] with token[{token}]')
     success, msg = db.check_auth(user, token)
+    print(f'auth: {success}, message: {msg}')
     if not success:
         print(msg)
         raise fastapi.HTTPException(status_code=401, detail="Authorization failure: " + msg)
@@ -87,20 +89,42 @@ async def login(body: LoginBody):
                                     content="Internal error. failed to retrieve token from database")
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=401, content="Invalid authentication credentials")
 
+
 @app.post('/parse')
-async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = None, token: Annotated[str | None, Cookie()] = None):
-    success, msg = db.check_auth(user, token)
-    print(f'auth: {success}, message: {msg}')
+async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = None,
+                    token: Annotated[str | None, Cookie()] = None):
+    check_auth(user, token)
     url = body.url
     language = body.language
     print('started parsing')
-    text = parse(url, language, user)
+    success = True
+    text = ''
+    try:
+        text = parse(url, language, user)
+    except Exception as e:
+        text = str(e)
+        success = False
+    history_success = db.add_history_entry(url, language, text, success, user)
+    if not success:
+        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500,
+                            content="Internal error. Failed to parse.")
+    if not history_success:
+        print('failed to add history entry')
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=f"{text}")
+
+
+@app.post('/history', response_model=list[HistoryEntry])
+async def get_history(user: Annotated[str | None, Cookie()] = None,
+                      token: Annotated[str | None, Cookie()] = None):
+    check_auth(user, token)
+    history = db.get_history(user)
+    return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=history)
 
 
 @app.get('/test')
 async def test():
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content="test")
+
 
 if __name__ == '__main__':
     import uvicorn

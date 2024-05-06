@@ -129,3 +129,36 @@ def generate_token(db: Session, user: str) -> Tuple[bool, dict]:
         db.commit()
         db.refresh(db_token)
     return get_token(user)
+
+
+@db_session
+def add_history_entry(db: Session, url: str, language: str, result: str, success: bool, requester: str):
+    entry = models.History(url=url,
+                           language=language,
+                           result=result,
+                           success=success,
+                           requester=requester,
+                           timestamp=datetime.now())
+    db.add(entry)
+    try:
+        db.commit()
+    except Exception as e:
+        print(f'failed to add history entry, {entry}')
+        print(type(e).__name__)
+        return False
+    db.refresh(entry)
+    return True
+
+
+@db_session
+def get_history(db: Session, user: str):
+    history = db.query(models.History).filter(models.History.requester == user).all()
+    return [schemas.HistoryEntry(
+            id_=entry.id_,
+            url=entry.url,
+            language=entry.language,
+            result=entry.result,
+            success=1 if entry.success else 0,
+            requester=entry.requester,
+            timestamp=str(entry.timestamp),
+        ).dict() for entry in history]

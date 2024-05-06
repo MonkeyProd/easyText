@@ -13,3 +13,16 @@ class Token(BaseModel):
     token: str
     owner: str
     expire: str
+
+
+class HistoryEntry(BaseModel):
+    id_: int
+    url: str
+    language: str
+    result: str
+    success: int
+    requester: str
+    timestamp: str
+
+    class Config:
+        orm_mode = True

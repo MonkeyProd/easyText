@@ -5,6 +5,7 @@ from sqlalchemy import \
     Integer, \
     TIMESTAMP, \
     UUID, \
+    Boolean, \
     UniqueConstraint, \
     ForeignKeyConstraint, \
     PrimaryKeyConstraint
@@ -34,6 +35,29 @@ class Tokens(Base):
         return f"Tokens(token='{self.token}', " \
                f"owner='{self.owner}', " \
                f"expire='{self.expire}')"
+
+
+class History(Base):
+    __tablename__ = 'history'
+
+    id_ = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    language = Column(String, nullable=False)
+    result = Column(String, nullable=False)
+    success = Column(Boolean, nullable=False)
+    requester = Column(String, ForeignKey('users.name', ondelete='CASCADE'))
+    timestamp = Column(TIMESTAMP, nullable=False)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def __repr__(self):
+        return (f"History(id='{self.id_}', "
+                f"url='{self.url}', "
+                f"language='{self.language}', "
+                # f"result='{self.result}', "
+                f"success='{self.success}', "
+                f"requester='{self.requester}')")
 
 #
 # class Classification(Base):

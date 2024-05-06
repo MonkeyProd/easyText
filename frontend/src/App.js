@@ -4,22 +4,36 @@ import { LandingPage } from "./pages/landing";
 import { Menu } from "./components/Menu";
 import { Footer } from "./components/Footer";
 import { AboutUs } from "./pages/aboutUs";
+import { History } from "./pages/history"
+import { Chat } from "./pages/chat";
 import { login } from "./api";
 import { useState } from "react";
 import { useCookies } from "react-cookie"
 import Modal from 'react-modal';
 import axios from "axios"
+import { QueryClientProvider, QueryClient} from "@tanstack/react-query";
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 
 const API_URL = "http://localhost:8080"
 
-function App() {
 
+function App() {
     const [cookies, setCookie] = useCookies(['user', 'token'])
     const [successLogin, setSuccessLogin] = useState(true);
     const [successRegister, setSuccessRegister] = useState(true);
     const [authError, setAuthError] = useState('');
+    
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false,
+                retry: 0
+            },
+        },
+    })
+
     function login(user, password) {
-        axios.post(`${API_URL}/login`, { user, password })
+        axios.post(`${API_URL}/login`, { user, password }, { withCredentials: true })
             .then((data) => {
                 const expires = new Date(data.data.expire)
                 console.log(expires)
@@ -35,7 +49,7 @@ function App() {
     }
 
     function register(user, password) {
-        axios.post(`${API_URL}/register`, { user, password })
+        axios.post(`${API_URL}/register`, { user, password }, { withCredentials: true })
             .then((data) => {
                 closeAuth();
                 setSuccessRegister(true)
@@ -65,6 +79,8 @@ function App() {
     }
 
     return (
+    <QueryClientProvider client={queryClient}>
+
         <div className="App" >
             <BrowserRouter>
                 <Menu openAuthCallback={openAuth} />
@@ -151,15 +167,19 @@ function App() {
                 <div className="AppContainer">
                     <div className="AppPage">
                         <Routes>
-                            <Route path="" element={<LandingPage />} />
+                            <Route path="" element={cookies['user'] ? <Chat/> : <LandingPage />} />
                             <Route path="/about" element={<AboutUs />} />
+                            <Route path="/history" element={<History />} />
 
                         </Routes>
                     </div>
                 </div>
                 <Footer />
             </BrowserRouter>
+            <ReactQueryDevtools initialIsOpen={true}/>
         </div>
+    </QueryClientProvider>
+
     );
 }
 

@@ -2,6 +2,7 @@ FROM python:3.11
 WORKDIR app
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install tesseract-ocr -y
+RUN apt-get install tesseract-ocr-rus -y
 RUN apt-get install -y chromium
 RUN apt-get install -y chromium-driver
 COPY ./requirements.txt .

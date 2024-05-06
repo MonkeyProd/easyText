@@ -1,0 +1,12 @@
+@use "react-widgets/scss/styles.scss" with (
+  $input-height: 0.5em,
+  $widget-bg: rgb(16, 17, 18),
+  $input-color: white,
+  $widget-border-color: rgba(16, 17, 18),
+  $widget-focus-width: 1px,
+  $gray-900: white,
+$widget-focus-color: white,
+  // Most component variables are forwarded with a namespace
+  $list-selected-bg: #4e49de9f,
+  $widget-hover-bg: rgba(40, 40, 40, 0.79),
+);

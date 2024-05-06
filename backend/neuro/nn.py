@@ -6,9 +6,9 @@ import numpy as np
 import time
 import os
 
-import sys
-import fitz  # PyMuPDF
-import io
+# import sys
+# import fitz  # PyMuPDF
+# import io
 
 from selenium import webdriver
 from selenium.webdriver import Chrome, ChromeOptions
@@ -52,89 +52,89 @@ def imageToText(image_path, language):
 
 
 # Function to perform OCR on a page
-def ocr_page(page, language):
-    pix = page.get_pixmap()
-    img = Image.open(io.BytesIO(pix.tobytes()))
-
-    ocr_data = pytesseract.image_to_data(img, lang=language,
-                                         output_type=pytesseract.Output.DICT)
-    # pprint.pprint(ocr_data)
-    char_data = pytesseract.image_to_boxes(img,config='tosp_near_lh_edge=1', lang=language, output_type=pytesseract.Output.DICT)
-    return ocr_data, char_data, img.size
-
-
-# Read and OCR the PDF
-def rect_avg_color(page, x, y, w, h):
-    pix = page.get_pixmap()
-    img = Image.open(io.BytesIO(pix.tobytes()))
-    r, g, b = 0, 0, 0
-    for i in range(x, x + w):
-        for j in range(y, y + h):
-            current_r, current_g, current_b = img.getpixel((i, j))
-            r += current_r
-            g += current_g
-            b += current_b
-    r /= w * h * 255
-    g /= w * h * 255
-    b /= w * h * 255
-    avg_color = (r, g, b)
-    return avg_color
+# def ocr_page(page, language):
+#     pix = page.get_pixmap()
+#     img = Image.open(io.BytesIO(pix.tobytes()))
+#
+#     ocr_data = pytesseract.image_to_data(img, lang=language,
+#                                          output_type=pytesseract.Output.DICT)
+#     # pprint.pprint(ocr_data)
+#     char_data = pytesseract.image_to_boxes(img,config='tosp_near_lh_edge=1', lang=language, output_type=pytesseract.Output.DICT)
+#     return ocr_data, char_data, img.size
+#
+#
+# # Read and OCR the PDF
+# def rect_avg_color(page, x, y, w, h):
+#     pix = page.get_pixmap()
+#     img = Image.open(io.BytesIO(pix.tobytes()))
+#     r, g, b = 0, 0, 0
+#     for i in range(x, x + w):
+#         for j in range(y, y + h):
+#             current_r, current_g, current_b = img.getpixel((i, j))
+#             r += current_r
+#             g += current_g
+#             b += current_b
+#     r /= w * h * 255
+#     g /= w * h * 255
+#     b /= w * h * 255
+#     avg_color = (r, g, b)
+#     return avg_color
 # , config='--psm 3 --oem 3'
 
-def ocr_pdf(pdf_path, language):
-    draw_box = True
-    box_fill = True
-    doc = fitz.open(pdf_path)
-    total_pages = len(doc)
-    print(f"Total pages in the document: {total_pages}")
+# def ocr_pdf(pdf_path, language):
+#     draw_box = True
+#     box_fill = True
+#     doc = fitz.open(pdf_path)
+#     total_pages = len(doc)
+#     print(f"Total pages in the document: {total_pages}")
+#
+#     for page_num in range(0, total_pages):
+#         print(f"Processing page {page_num + 1}/{total_pages}...")
+#         page = doc[page_num]
+#         ocr_data, char_data, img_size = ocr_page(page, language)
+#         page.clean_contents()
+#         print(char_data.keys())
+#         for i, char in enumerate(char_data['char']):
+#             l, b, r, t = char_data['left'][i], char_data['bottom'][i], char_data['right'][i], char_data['top'][i]
+#             print(char, l, b, r, t)
+#             shape = page.new_shape()
+#             # if t-b>(r-l)*2:
+#             #     continue
+#             shape.draw_rect((l,img_size[1]-t,r,img_size[1]-b))
+#             shape.finish(color=(1, 0, 0), width=0.1)
+#             shape.commit(overlay=True)
+#             # page.insert_text((x, y + h), word, fontsize=8, color=white)
+#         continue
+#         for i, word in enumerate(ocr_data['text']):
+#             if word.strip():  # Exclude empty strings
+#                 x, y, w, h, = ocr_data['left'][i], ocr_data['top'][i], ocr_data['width'][i], ocr_data['height'][i]
+#                 white = (0, 0, 0)
+#                 if draw_box:
+#                     shape = page.new_shape()
+#                     shape.draw_rect((x, y, x + w, y + h))
+#                     if box_fill:
+#                         avg_color = rect_avg_color(page, x, y, w, h)
+#                         shape.finish(color=avg_color, width=0.1, fill=avg_color)
+#                     else:
+#                         shape.finish(color=(1, 0, 0), width=1)
+#                     shape.commit(overlay=True)
+#                 page.insert_text((x, y + h), word, fontsize=8, color=white)
+#                 # print(word)
+#
+#     print("OCR process completed.")
+#     return doc
 
-    for page_num in range(0, total_pages):
-        print(f"Processing page {page_num + 1}/{total_pages}...")
-        page = doc[page_num]
-        ocr_data, char_data, img_size = ocr_page(page, language)
-        page.clean_contents()
-        print(char_data.keys())
-        for i, char in enumerate(char_data['char']):
-            l, b, r, t = char_data['left'][i], char_data['bottom'][i], char_data['right'][i], char_data['top'][i]
-            print(char, l, b, r, t)
-            shape = page.new_shape()
-            # if t-b>(r-l)*2:
-            #     continue
-            shape.draw_rect((l,img_size[1]-t,r,img_size[1]-b))
-            shape.finish(color=(1, 0, 0), width=0.1)
-            shape.commit(overlay=True)
-            # page.insert_text((x, y + h), word, fontsize=8, color=white)
-        continue
-        for i, word in enumerate(ocr_data['text']):
-            if word.strip():  # Exclude empty strings
-                x, y, w, h, = ocr_data['left'][i], ocr_data['top'][i], ocr_data['width'][i], ocr_data['height'][i]
-                white = (0, 0, 0)
-                if draw_box:
-                    shape = page.new_shape()
-                    shape.draw_rect((x, y, x + w, y + h))
-                    if box_fill:
-                        avg_color = rect_avg_color(page, x, y, w, h)
-                        shape.finish(color=avg_color, width=0.1, fill=avg_color)
-                    else:
-                        shape.finish(color=(1, 0, 0), width=1)
-                    shape.commit(overlay=True)
-                page.insert_text((x, y + h), word, fontsize=8, color=white)
-                # print(word)
 
-    print("OCR process completed.")
-    return doc
-
-
-def process_pdf(pdf_path, language):
-    start_page = 1
-    end_page = None
-
-    output_path = pdf_path.rsplit('.', 1)[0] + '-converted.pdf'  # Add '-converted' suffix to the filename
-
-    print(f"Starting OCR for {pdf_path}...")
-    doc = ocr_pdf(pdf_path, language)
-    doc.save(output_path)  # Save the searchable PDF
-    print(f"Converted PDF saved as {output_path}")
+# def process_pdf(pdf_path, language):
+#     start_page = 1
+#     end_page = None
+#
+#     output_path = pdf_path.rsplit('.', 1)[0] + '-converted.pdf'  # Add '-converted' suffix to the filename
+#
+#     print(f"Starting OCR for {pdf_path}...")
+#     doc = ocr_pdf(pdf_path, language)
+#     doc.save(output_path)  # Save the searchable PDF
+#     print(f"Converted PDF saved as {output_path}")
 
 
 def parse(url, language, image_name):
