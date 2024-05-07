@@ -19,10 +19,11 @@ db.init_db()
 app = FastAPI()
 
 GLOBAL_HEADERS = {"Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*"}
+                  "Access-Control-Allow-Origin": "http://localhost:3000"}
 
-origins = ["*"]
+origins = ["http://localhost:3000"]
 
+print("GOVNO")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

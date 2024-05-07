@@ -32,9 +32,7 @@ export const Menu = (props) => {
                 </Link>
             </div>
             <div className={styles.RightCorner}>
-                <Link to="/" className={styles.AboutUsLink}>
-                    Попробовать easyText
-                </Link>
+               
                 <Link to="/about" className={styles.AboutUsLink}>
                     О нас
                 </Link>
@@ -63,6 +61,9 @@ export const Menu = (props) => {
                     </>
                 ) : (
                     <>
+                     <Link to="/" className={styles.AboutUsLink}>
+                    Попробовать easyText
+                    </Link>
                         <Link to="/history" className={styles.AboutUsLink}>
                             История
                         </Link>

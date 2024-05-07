@@ -44,7 +44,7 @@ export const Chat = () => {
 
             <div className={styles.ResultContainer}>
                 {!data && !isSuccess && !isFetching && !isError && <h3 className={styles.Info}> Здесь будет результат</h3>}
-                {isSuccess && !isFetching && <TextareaAutosize className={styles.DataContainer}>{!isFetching && data}</TextareaAutosize >}
+                {isSuccess && data && !isFetching && <TextareaAutosize className={styles.DataContainer}>{!isFetching && data}</TextareaAutosize >}
                 {isFetching && <FidgetSpinner
                 visible={true}
                 height="80"
