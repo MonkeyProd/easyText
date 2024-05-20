@@ -34,3 +34,18 @@
     font-size: 8pt;
     border-radius: 10px;
 }
+
+.SendButton {
+color: #ffffff;
+padding: 5px 10px;
+}
+
+.SendButton:hover {
+color: #ffffff;
+padding: 5px 10px;
+}
+  
+.SendButton:disabled,
+.SendButton[disabled]{
+color: #666666;
+}

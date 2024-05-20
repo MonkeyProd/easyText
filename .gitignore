@@ -1,3 +1,12 @@
 .idea
 **/__pycache__
 backend/venv
+backend/extensions
+backend/images
+backend/neuro/extensions
+backend/neuro/images
+backend/neuro/test-converted.pdf
+backend/neuro/test.pdf
+backend/neuro/test.png
+backend/neuro/texts
+backend/texts

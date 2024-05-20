@@ -22,6 +22,8 @@ class HistoryEntry(BaseModel):
     result: str
     success: int
     requester: str
+    image_path: str
+    text_path: str
     timestamp: str
 
     class Config:

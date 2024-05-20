@@ -1,7 +1,9 @@
+import datetime
 import json
 from os import listdir
 from shutil import make_archive
 from typing import Annotated
+import validators
 
 import fastapi
 from fastapi import FastAPI, UploadFile, Request, Depends, Cookie
@@ -97,21 +99,34 @@ async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = 
     check_auth(user, token)
     url = body.url
     language = body.language
+
+    invalid_url = not validators.url(url)
+    empty_url = len(url) == 0
+    no_url = url is None
+    if invalid_url or empty_url or no_url:
+        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500, content="Invalid URL")
     print('started parsing')
-    success = True
-    text = ''
     try:
-        text = parse(url, language, user)
+        result_name = f'{user}_{datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}'
+        text, image_path, text_path = parse(url, language, result_name)
+        success = True
     except Exception as e:
         text = str(e)
+        image_path = text_path = ''
         success = False
-    history_success = db.add_history_entry(url, language, text, success, user)
+    history_success = db.add_history_entry(url, language, text, success, user, image_path, text_path)
     if not success:
-        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500,
-                            content="Internal error. Failed to parse.")
+        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500, content="Internal error. Failed to parse.")
     if not history_success:
         print('failed to add history entry')
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=f"{text}")
+
+
+@app.get('/download/{file_type}/{file_name}')
+async def download_file(file_type: str, file_name: str, user: Annotated[str | None, Cookie()] = None,
+                        token: Annotated[str | None, Cookie()] = None):
+    check_auth(user, token)
+    return FileResponse(path=f'{file_type}/{file_name}', filename=file_name, media_type='image/png')
 
 
 @app.post('/history', response_model=list[HistoryEntry])

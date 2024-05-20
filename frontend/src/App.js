@@ -176,7 +176,7 @@ function App() {
                 </div>
                 <Footer />
             </BrowserRouter>
-            {/* <ReactQueryDevtools initialIsOpen={true}/> */}
+            <ReactQueryDevtools initialIsOpen={true}/>
         </div>
     </QueryClientProvider>
 

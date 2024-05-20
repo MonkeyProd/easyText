@@ -1,5 +1,6 @@
 import dataclasses
 import json
+import os
 from os import environ
 
 # 3 hours in seconds
@@ -16,7 +17,11 @@ class PostgresConfig:
 
 def make_url() -> str:
     config = PostgresConfig('database', 5432, 'postgres', 'postgres', 'postgres')
-    print(config)
+    is_in_docker = os.environ.get('DEV') is not None
+    if not is_in_docker:
+        config.host = 'localhost'
+
+    print(f'Starting in docker: {is_in_docker}.\n', config)
     port = f':{config.port}' if config.port else ''
     url = f"postgresql://{config.user}:{config.password}@{config.host}{port}/{config.database}"
     return url

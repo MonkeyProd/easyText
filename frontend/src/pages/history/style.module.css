@@ -12,15 +12,39 @@
   white-space: nowrap;
   overflow: hidden; 
 }
+.ButtonLink {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  line-height: 21.78px;
+}
 .HistoryLinkCol{
   max-width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.HistoryTable::-webkit-scrollbar {
+	width: 6px;
+  position: fixed;
+  background: #2a302e;
+}
+.HistoryTable::-webkit-scrollbar-thumb {
+  background: #56625e;
+  border-radius: 6px;
+}
+.HistoryTable::-webkit-scrollbar-button {
+  display: block;
+  background-color: #96a09d;
+  background-repeat: no-repeat;   
+  background-size: 50%;
+  background-position: center;
+}
 
 .HistoryTable{
   margin-top: 5%;
   margin-left: 5%;
   margin-bottom: 5%;
+  overflow-x:auto;
+  display:block;
 }
