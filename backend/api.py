@@ -114,7 +114,7 @@ async def parse_url(body: ParseUrlBody, user: Annotated[str | None, Cookie()] = 
         success = False
     history_success = db.add_history_entry(url, language, text, success, user, image_path, text_path)
     if not success:
-        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500, content="Internal error. Failed to parse.")
+        return JSONResponse(headers=GLOBAL_HEADERS, status_code=500, content="Internal error. Failed to parse.\n"+text)
     if not history_success:
         print('failed to add history entry')
     return JSONResponse(headers=GLOBAL_HEADERS, status_code=200, content=f"{text}")
