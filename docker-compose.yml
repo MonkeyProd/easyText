@@ -4,6 +4,8 @@ version: '3.9'
 services:
   backend:
     build: ./backend
+    environment:
+      - TZ=Europe/Moscow
     env_file:
       - .env
     depends_on:

@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas, security
 
+from settings import TOKEN_EXPIRE_DELTA_SECONDS 
 
 # decorator that passes db session to function as first argument
 def db_session(func):
@@ -116,12 +117,14 @@ def get_token(db: Session, user: str) -> Tuple[bool, dict]:
 @db_session
 def generate_token(db: Session, user: str) -> Tuple[bool, dict]:
     token = uuid.uuid4()
-    expire = datetime.now() + timedelta(days=1)
+    expire = datetime.now() + timedelta(seconds=TOKEN_EXPIRE_DELTA_SECONDS)
     # if user already have token, update it
     if user_have_token(user):
         db_token = db.query(models.Tokens).filter(models.Tokens.owner == user).first()
         db_token.token = token
         db_token.expire = expire
+        db.commit()
+        db.refresh(db_token)
     else:
         # else create new token
         db_token = models.Tokens(token=token, owner=user, expire=expire)

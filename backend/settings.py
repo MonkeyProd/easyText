@@ -2,8 +2,8 @@ import dataclasses
 import json
 from os import environ
 
-# 3 hours in seconds
-TOKEN_EXPIRE_DELTA_SECONDS = 3 * 60 * 60
+# 1 hour in seconds
+TOKEN_EXPIRE_DELTA_SECONDS = 1 * 60 * 60
 
 @dataclasses.dataclass
 class PostgresConfig:

@@ -8,7 +8,7 @@ RUN apt-get install -y chromium-driver
 COPY ./requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
-RUN ls
+RUN date
 COPY . .
 EXPOSE 8080
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8080"]
