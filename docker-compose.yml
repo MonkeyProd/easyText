@@ -2,6 +2,16 @@
 version: '3.9'
 
 services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    hostname: "localhost"
+    ports:
+      - "5432:5432"
+
   backend:
     build: ./backend
     environment:
@@ -19,16 +29,6 @@ services:
       - backend
     ports:
       - "3000:80"
-
-  database:
-    image: postgres
-    environment:
-      POSTGRES_DB: "postgres"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-    hostname: "localhost"
-    ports:
-      - "5432:5432"
 
   # adblock:
   #   build: ./adblock
