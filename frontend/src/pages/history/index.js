@@ -52,7 +52,7 @@ export const History = () => {
                             <td>{elem.language}</td>
                             <td>{
                             elem.text_path?.length>0 ? 
-                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.text_path}`}><u>Скачать текст</u></Link> :
+                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.text_path}`} target="_blank"><u>Скачать текст</u></Link> :
                             "Текст недоступен"
                             }</td>
                             <td>{elem.success ? "✅": "❌"}</td>
@@ -60,7 +60,7 @@ export const History = () => {
                             <td>{elem.timestamp}</td>
                             <td>{
                             elem.image_path?.length>0 ? 
-                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.image_path}`}><u>Скачать скриншот</u></Link> :
+                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.image_path}`} target="_blank"><u>Скачать скриншот</u></Link> :
                             "Скриншот недоступен"
                             }</td>
                             </tr>
