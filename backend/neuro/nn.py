@@ -34,9 +34,9 @@ def saveUrlToImage(url, resultImageName):
     print('initial setup done')
     adblockers = ["https://chromewebstore.google.com/detail/ghostery-блокировщик-трек/mlomiejdfkolichcflejclcbmpeaniij",
                   "https://chromewebstore.google.com/detail/adguard-антибаннер/bgnkhhnnamicmpeenaelnjfhikgbkllg",
-                  "https://chromewebstore.google.com/detail/adblocker-stands/lgblnfidahcdcjddiepkckcfdhpknnjh",
-                  "https://chromewebstore.google.com/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom",
-                  "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm",
+                  # "https://chromewebstore.google.com/detail/adblocker-stands/lgblnfidahcdcjddiepkckcfdhpknnjh",
+                  # "https://chromewebstore.google.com/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom",
+                  # "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm",
                   "https://chromewebstore.google.com/detail/stop-reclame/ohmkcnojelglgphmkgmofjlmpoelccjh"]
     options.add_argument('--load-extension=' + ','.join(
         [Extension(adblocker).load(with_command_line_option=False) for adblocker in adblockers]))

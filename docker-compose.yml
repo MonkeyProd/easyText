@@ -28,7 +28,7 @@ services:
     ports:
       - "5432:5432"
 
-  adblock:
-    build: ./adblock
-    ports:
-      - "8118:8118"
+  # adblock:
+  #   build: ./adblock
+  #   ports:
+  #     - "8118:8118"

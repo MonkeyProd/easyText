@@ -1,0 +1,12 @@
+.idea
+__pycache__
+extensions
+images
+texts
+venv
+neuro/extensions
+neuro/images
+neuro/test-converted.pdf
+neuro/test.pdf
+neuro/test.png
+neuro/texts
