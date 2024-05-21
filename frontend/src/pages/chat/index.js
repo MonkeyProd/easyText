@@ -11,8 +11,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 const API_URL = "http://localhost:8080"
 
 export const Chat = () => {
-    const [url, setUrl] = useState('https://github.com/TanStack/query/issues/5371')
-    const [language, setLanguage] = useState('eng')
+    const [url, setUrl] = useState('')
+    const [language, setLanguage] = useState('')
     const {isLoading, isFetching, isPaused, isSuccess, isError, error, data, refetch} = useQuery({
         queryKey: ['chat'],
         queryFn: () => axios.post(`${API_URL}/parse`, {url, language}, { withCredentials: true }).then((data)=>data.data),
@@ -24,8 +24,11 @@ export const Chat = () => {
     }, [button_ref])
     
     const parse = ()=>{
+        console.log(languages.includes(language))
         refetch()
     }
+    const languages = ["rus", "eng", "rus+eng"]
+    console.log(languages.includes(language))
     return (
         <div className={styles.ChatContainer}>
   
@@ -35,17 +38,17 @@ export const Chat = () => {
                 <DropdownList
                     placeholder='Яzык'
                     onChange={(data) => {setLanguage(data)}}
-                    data={["rus", "eng", "rus+eng"]}
+                    data={languages}
                 />
            
-            <button ref={button_ref} onClick={()=>parse()}>Отправить</button>
+            <button className={styles.SendButton} disabled={(!languages.includes(language)) || url.length===0} ref={button_ref} onClick={()=>parse()}>Отправить</button>
    
             </div>
 
             <div className={styles.ResultContainer}>
                 {!data && !isSuccess && !isFetching && !isError && <h3 className={styles.Info}> Здесь будет результат</h3>}
                 {isSuccess && data && !isFetching && <TextareaAutosize className={styles.DataContainer}>{!isFetching && data}</TextareaAutosize >}
-                {isFetching && <FidgetSpinner
+                {isFetching && <div><FidgetSpinner
                 visible={true}
                 height="80"
                 width="80"
@@ -53,8 +56,8 @@ export const Chat = () => {
                 ariaLabel="fidget-spinner-loading"
                 wrapperStyle={{}}
                 wrapperClass="fidget-spinner-wrapper"
-                />}
-                {isError && <h1>Ошибка</h1>}
+                /> <h3>Загрузка может занять до минуты</h3></div>}
+                {isError && <div><h1>Ошибка</h1><h3>{error?.response?.data}</h3></div>}
             </div>
         </div>
     )

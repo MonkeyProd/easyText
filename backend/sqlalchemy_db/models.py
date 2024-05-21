@@ -46,6 +46,8 @@ class History(Base):
     result = Column(String, nullable=False)
     success = Column(Boolean, nullable=False)
     requester = Column(String, ForeignKey('users.name', ondelete='CASCADE'))
+    image_path = Column(String)
+    text_path = Column(String)
     timestamp = Column(TIMESTAMP, nullable=False)
 
     def as_dict(self):
@@ -57,6 +59,8 @@ class History(Base):
                 f"language='{self.language}', "
                 # f"result='{self.result}', "
                 f"success='{self.success}', "
+                f"image_path='{self.image_path}', "
+                f"text_path='{self.text_path}', "
                 f"requester='{self.requester}')")
 
 #

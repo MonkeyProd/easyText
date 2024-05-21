@@ -135,12 +135,15 @@ def generate_token(db: Session, user: str) -> Tuple[bool, dict]:
 
 
 @db_session
-def add_history_entry(db: Session, url: str, language: str, result: str, success: bool, requester: str):
+def add_history_entry(db: Session, url: str, language: str, result: str, success: bool, requester: str, image_path: str,
+                      text_path: str):
     entry = models.History(url=url,
                            language=language,
                            result=result,
                            success=success,
                            requester=requester,
+                           image_path=image_path,
+                           text_path=text_path,
                            timestamp=datetime.now())
     db.add(entry)
     try:
@@ -157,11 +160,13 @@ def add_history_entry(db: Session, url: str, language: str, result: str, success
 def get_history(db: Session, user: str):
     history = db.query(models.History).filter(models.History.requester == user).all()
     return [schemas.HistoryEntry(
-            id_=entry.id_,
-            url=entry.url,
-            language=entry.language,
-            result=entry.result,
-            success=1 if entry.success else 0,
-            requester=entry.requester,
-            timestamp=str(entry.timestamp),
-        ).dict() for entry in history]
+        id_=entry.id_,
+        url=entry.url,
+        language=entry.language,
+        result=entry.result,
+        success=1 if entry.success else 0,
+        requester=entry.requester,
+        text_path=entry.text_path,
+        image_path=entry.image_path,
+        timestamp=str(entry.timestamp),
+    ).dict() for entry in history]

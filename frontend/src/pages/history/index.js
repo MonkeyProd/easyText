@@ -3,22 +3,13 @@ import styles from "./style.module.css";
 import {useQuery} from "@tanstack/react-query"
 import axios from "axios";
 import { useCookies } from "react-cookie"
+import {FidgetSpinner} from "react-loader-spinner"
 import { Link } from 'react-router-dom';
 
 const API_URL = "http://localhost:8080"
 
-function download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-}
-
 export const History = () => {
-    const [cookies, setCookie] = useCookies(['user', 'token'])
+    const [cookies] = useCookies(['user', 'token'])
     if (!cookies['user'] || !cookies['token']){
         window.location.replace('/')
     }
@@ -32,7 +23,16 @@ export const History = () => {
             <h1 className={styles.Title}>
             История запросов
             </h1>
-            {isSuccess && <table className={styles.HistoryTable}>
+            {isFetching && <div><FidgetSpinner
+                visible={true}
+                height="80"
+                width="80"
+                backgroundColor={'white'}
+                ariaLabel="fidget-spinner-loading"
+                wrapperStyle={{}}
+                wrapperClass="fidget-spinner-wrapper"
+                /> <h3>Загрузка...</h3></div>}
+            {(isSuccess && data.length===0) ? "История пуста" : <table className={styles.HistoryTable}>
                 <thead>
                     <td>ID</td>
                     <td>Ссылка</td>
@@ -41,20 +41,28 @@ export const History = () => {
                     <td>Успех</td>
                     {/* <td>requester</td> */}
                     <td>Время</td>
+                    <td>Скриншот</td>
                 </thead>
                 <tbody>
                     {
-                        data.map((elem,i)=>{
+                        data?.map((elem,i)=>{
                             return <tr>
                             <td>{elem.id_}</td>
                             <td className={styles.HistoryLinkCol}><Link className={styles.HistoryLink} to={elem.url}>{elem.url}</Link></td>
                             <td>{elem.language}</td>
-                            <td colSpan={elem.success? 1: 2}>{elem.success === 1 ?
-                            <button onClick={()=>download('res.txt',elem.result)}><u>Скачать результат</u></button>
-                            :"❌"}</td>
-                            {elem.success ? <td>✅</td>: <></>}
+                            <td>{
+                            elem.text_path?.length>0 ? 
+                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.text_path}`}><u>Скачать текст</u></Link> :
+                            "Текст недоступен"
+                            }</td>
+                            <td>{elem.success ? "✅": "❌"}</td>
                             {/* <td>{elem.requester}</td> */}
                             <td>{elem.timestamp}</td>
+                            <td>{
+                            elem.image_path?.length>0 ? 
+                            <Link className={styles.HistoryLink} to={`${API_URL}/download/${elem.image_path}`}><u>Скачать скриншот</u></Link> :
+                            "Скриншот недоступен"
+                            }</td>
                             </tr>
                         })
                     }

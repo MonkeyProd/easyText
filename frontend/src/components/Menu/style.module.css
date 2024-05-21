@@ -1,5 +1,7 @@
 .Menu {
-    height: 78px;
+    height: auto;
+    min-height: 8vh;
+    padding: 1vh;
     width: 100%;
     background: rgba(217, 217, 217, 0.1);
 
@@ -98,7 +100,10 @@ button:focus {
 }
 
 .RightCorner {
+    margin: 1vh;
+    /* align-items: center; */
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 49px;
 }

@@ -43,7 +43,7 @@ export class ExplosiveButton {
 				yBound = this.centerY - r,
 				easing = "cubic-bezier(0.15,0.5,0.5,0.85)";
 
-			if (kind == "fire") {
+			if (kind === "fire") {
 				let x = this.centerX + randomFloat(-xBound,xBound),
 					y = this.centerY + randomFloat(-yBound,yBound),
 					a = calcAngle(this.centerX,this.centerY,x,y),
@@ -51,7 +51,7 @@ export class ExplosiveButton {
 
 				new FireParticle(this.element,x,y,diam,diam,a,dist,duration,easing);
 
-			} else if (kind == "debris") {
+			} else if (kind === "debris") {
 				let x = (this.pieceWidth / 2) + this.pieceWidth * (c % this.piecesX),
 					y = (this.pieceHeight / 2) + this.pieceHeight * Math.floor(c / this.piecesX),
 					a = calcAngle(this.centerX,this.centerY,x,y),

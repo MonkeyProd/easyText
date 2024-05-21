@@ -1,6 +1,6 @@
 .Footer {
     width: 100%;
-    /*height: 15%;*/
+    min-height: 15vh;
     background: #d9d9d91a;
     padding-top: 29px;
     padding-left: 82px;

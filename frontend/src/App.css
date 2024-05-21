@@ -11,12 +11,12 @@
 .AppContainer {
     display: flex;
     justify-content: center;
+    min-height: 77vh;
 }
 
 .AppPage {
     width: 70%;
     background: #1e1e1e6e;
-    height: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
