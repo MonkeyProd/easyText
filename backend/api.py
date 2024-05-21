@@ -25,7 +25,6 @@ GLOBAL_HEADERS = {"Content-Type": "application/json",
 
 origins = ["http://localhost:3000"]
 
-print("GOVNO")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
