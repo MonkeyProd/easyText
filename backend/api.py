@@ -20,11 +20,10 @@ db.init_db()
 
 app = FastAPI()
 
+origins = ["http://localhost:3000", "http://easy-text.ru"]
+
 GLOBAL_HEADERS = {"Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "http://localhost:3000"}
-
-origins = ["http://localhost:3000"]
-
+                  "Access-Control-Allow-Origin": "*"}
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
