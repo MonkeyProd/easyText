@@ -29,8 +29,3 @@ services:
       - backend
     ports:
       - "3000:80"
-
-  # adblock:
-  #   build: ./adblock
-  #   ports:
-  #     - "8118:8118"
